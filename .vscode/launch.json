@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ToDoListRoadmapShApplication<to_do_list_roadmap_sh>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.practice.to_do_list_roadmap_sh.ToDoListRoadmapShApplication",
+            "projectName": "to_do_list_roadmap_sh",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
