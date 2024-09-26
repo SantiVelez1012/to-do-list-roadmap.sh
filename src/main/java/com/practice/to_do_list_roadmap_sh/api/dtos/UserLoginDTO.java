@@ -2,23 +2,23 @@ package com.practice.to_do_list_roadmap_sh.api.dtos;
 
 public class UserLoginDTO {
 
-    private String email;
+    private String userName;
     private String password;
 
     public UserLoginDTO() {
     }
 
-    public UserLoginDTO(String email, String password) {
-        this.email = email;
+    public UserLoginDTO(String userName, String password) {
+        this.userName = userName;
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {

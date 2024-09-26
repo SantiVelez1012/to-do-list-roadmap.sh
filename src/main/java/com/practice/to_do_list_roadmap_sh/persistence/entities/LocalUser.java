@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class LocalUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +25,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
 
-    public User() {
+    public LocalUser() {
     }
 
-    public User(String name, String email, String password, List<Task> tasks) {
+    public LocalUser(String name, String email, String password, List<Task> tasks) {
         this.name = name;
         this.email = email;
         this.password = password;
