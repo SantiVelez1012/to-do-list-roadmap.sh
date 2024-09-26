@@ -18,7 +18,7 @@ public class LocalUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String username;
     private String email;
     private String password;
 
@@ -28,8 +28,8 @@ public class LocalUser {
     public LocalUser() {
     }
 
-    public LocalUser(String name, String email, String password, List<Task> tasks) {
-        this.name = name;
+    public LocalUser(String username, String email, String password, List<Task> tasks) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.tasks = tasks;
@@ -43,12 +43,12 @@ public class LocalUser {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

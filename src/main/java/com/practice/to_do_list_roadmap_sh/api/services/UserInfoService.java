@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +20,8 @@ import com.practice.to_do_list_roadmap_sh.api.exceptions.LoggedUserNotFoundExcep
 import com.practice.to_do_list_roadmap_sh.config.JwtService;
 import com.practice.to_do_list_roadmap_sh.persistence.entities.LocalUser;
 import com.practice.to_do_list_roadmap_sh.persistence.repositories.UserRepository;
+import org.springframework.context.annotation.Lazy;
+
 
 @Service
 public class UserInfoService implements UserDetailsService {
@@ -32,14 +33,10 @@ public class UserInfoService implements UserDetailsService {
 
     private UserRepository userRepository;
 
-    @Lazy
     private AuthenticationManager authenticationManager;
 
-    public UserInfoService() {
-    }
-
-    public UserInfoService(JwtService jwtService, UserRepository userRepository,
-            AuthenticationManager authenticationManager) {
+    public UserInfoService(@Lazy JwtService jwtService, UserRepository userRepository,
+            @Lazy AuthenticationManager authenticationManager) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
@@ -52,14 +49,14 @@ public class UserInfoService implements UserDetailsService {
     public String createUser(UserCreateDTO user) {
 
         LocalUser newUser = new LocalUser();
-        newUser.setName(user.getUsername());
+        newUser.setUsername(user.getUsername());
         newUser.setEmail(user.getEmail());
         newUser.setPassword(user.getPassword());
 
         Optional<LocalUser> existingEmail = userRepository.findByEmail(user.getEmail());
 
-        Optional<LocalUser> existingUser = userRepository.findByName(user.getUsername());
-
+        Optional<LocalUser> existingUser = userRepository.findByUsername(user.getUsername());
+        System.out.println("User created: " + user);
         if (existingEmail.isPresent())
             return "This email already exists, please use other";
         if (existingUser.isPresent())
@@ -73,16 +70,16 @@ public class UserInfoService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<LocalUser> user = userRepository.findByName(username);
+        Optional<LocalUser> user = userRepository.findByUsername(username);
 
         if (!user.isPresent())
             throw new UsernameNotFoundException("User not found");
 
-        return new User(user.get().getName(), user.get().getPassword(), new ArrayList<>());
+        return new User(user.get().getUsername(), user.get().getPassword(), new ArrayList<>());
     }
 
     public String login(UserCreateDTO user) {
-        Optional<LocalUser> existingUser = userRepository.findByName(user.getUsername());
+        Optional<LocalUser> existingUser = userRepository.findByUsername(user.getUsername());
 
         if (!existingUser.isPresent())
             return "User not found";
@@ -99,7 +96,7 @@ public class UserInfoService implements UserDetailsService {
         String username = credentials.getUserName();
         String password = credentials.getPassword();
 
-        Optional<LocalUser> user = userRepository.findByName(username);
+        Optional<LocalUser> user = userRepository.findByUsername(username);
 
         if (!user.isPresent()) {
             throw new LoggedUserNotFoundException("Usuario no encontrado en la base de datos");

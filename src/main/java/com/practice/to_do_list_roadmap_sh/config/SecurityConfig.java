@@ -2,6 +2,7 @@ package com.practice.to_do_list_roadmap_sh.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,18 +22,21 @@ import com.practice.to_do_list_roadmap_sh.api.services.UserInfoService;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfig {
+public class SecurityConfig{
 
 
     private final JwtFilter jwtFilter;
 
-    public SecurityConfig(JwtFilter jwtFilter) {
+    private final UserInfoService userInfoService;
+
+    public SecurityConfig(@Lazy JwtFilter jwtFilter, @Lazy UserInfoService userInfoService) {
         this.jwtFilter = jwtFilter;
+        this.userInfoService = userInfoService;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserInfoService();
+        return userInfoService;
     }
 
     @Bean
