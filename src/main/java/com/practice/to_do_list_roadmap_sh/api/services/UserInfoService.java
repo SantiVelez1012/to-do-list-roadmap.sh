@@ -78,23 +78,10 @@ public class UserInfoService implements UserDetailsService {
         return new User(user.get().getUsername(), user.get().getPassword(), new ArrayList<>());
     }
 
-    public String login(UserCreateDTO user) {
-        Optional<LocalUser> existingUser = userRepository.findByUsername(user.getUsername());
-
-        if (!existingUser.isPresent())
-            return "User not found";
-
-        if (!existingUser.get().getPassword().equals(user.getPassword()))
-            return "Invalid password";
-
-        UserLoginDTO userLogged = new UserLoginDTO(user.getEmail(), user.getPassword());
-
-        return jwtService.generateToken(userLogged);
-    }
-
     public Map<String, String> loginByUserName(UserLoginDTO credentials) throws LoggedUserNotFoundException {
         String username = credentials.getUserName();
         String password = credentials.getPassword();
+        System.out.println("User: " + credentials.toString());
 
         Optional<LocalUser> user = userRepository.findByUsername(username);
 

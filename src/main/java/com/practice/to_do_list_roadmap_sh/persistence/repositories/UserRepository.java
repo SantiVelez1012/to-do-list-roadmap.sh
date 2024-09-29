@@ -10,7 +10,7 @@ import com.practice.to_do_list_roadmap_sh.persistence.entities.LocalUser;
 @Repository
 public interface UserRepository extends JpaRepository<LocalUser, Long> {
 
-    public Optional<LocalUser> findByUsername(String name);
+    public Optional<LocalUser> findByUsername(String username);
     public Optional<LocalUser> findByEmail(String email);
 
 }
