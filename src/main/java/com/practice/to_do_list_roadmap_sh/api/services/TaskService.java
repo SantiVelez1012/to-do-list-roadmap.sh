@@ -13,11 +13,14 @@ public class TaskService {
 
     private LocalUserService localUserService;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, LocalUserService localUserService) {
         this.taskRepository = taskRepository;
+        this.localUserService = localUserService;
     }
 
     public Task createNewTask(TaskDTO task){
+
+        
         
         Task newTask = new Task();
         newTask.setTitle(task.getTitle());
