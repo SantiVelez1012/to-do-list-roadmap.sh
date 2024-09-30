@@ -12,24 +12,24 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class LocalUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String username;
     private String email;
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
 
-    public User() {
+    public LocalUser() {
     }
 
-    public User(String name, String email, String password, List<Task> tasks) {
-        this.name = name;
+    public LocalUser(String username, String email, String password, List<Task> tasks) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.tasks = tasks;
@@ -43,12 +43,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

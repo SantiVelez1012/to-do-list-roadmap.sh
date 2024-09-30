@@ -39,7 +39,7 @@ public class JwtService {
 
     public String generateToken(UserLoginDTO request) {
         return Jwts.builder()
-                .setSubject(request.getEmail())
+                .setSubject(request.getUserName())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 horas
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

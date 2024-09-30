@@ -26,12 +26,12 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIgnore
-    private User user;
+    private LocalUser user;
 
     public Task() {
     }
 
-    public Task(String title, String description, User user) {
+    public Task(String title, String description, LocalUser user) {
         this.title = title;
         this.description = description;
         this.user = user;
@@ -61,11 +61,11 @@ public class Task {
         this.description = description;
     }
 
-    public User getUser() {
+    public LocalUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(LocalUser user) {
         this.user = user;
     }
 
