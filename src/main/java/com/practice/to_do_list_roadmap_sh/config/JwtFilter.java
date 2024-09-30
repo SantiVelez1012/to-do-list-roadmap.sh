@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.practice.to_do_list_roadmap_sh.api.services.UserInfoService;
+import com.practice.to_do_list_roadmap_sh.api.services.AuthInfoService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,9 +23,9 @@ public class JwtFilter extends OncePerRequestFilter{
 
     private JwtService jwtService;
 
-    private UserInfoService userDetailsService;
+    private AuthInfoService userDetailsService;
 
-    JwtFilter(JwtService jwtService, UserInfoService userDetailsService) {
+    JwtFilter(JwtService jwtService, AuthInfoService userDetailsService) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }

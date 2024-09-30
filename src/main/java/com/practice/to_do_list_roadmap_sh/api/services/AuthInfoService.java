@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Lazy;
 
 
 @Service
-public class UserInfoService implements UserDetailsService {
+public class AuthInfoService implements UserDetailsService {
 
     @Value("{jwt.secret}")
     private String JWT_SECRET;
@@ -35,7 +35,7 @@ public class UserInfoService implements UserDetailsService {
 
     private AuthenticationManager authenticationManager;
 
-    public UserInfoService(@Lazy JwtService jwtService, UserRepository userRepository,
+    public AuthInfoService(@Lazy JwtService jwtService, UserRepository userRepository,
             @Lazy AuthenticationManager authenticationManager) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
@@ -93,7 +93,7 @@ public class UserInfoService implements UserDetailsService {
 
             Map<String, String> response = new HashMap<>();
 
-            response.put("Token : ", token);
+            response.put("Token", token);
 
             return response;
         }

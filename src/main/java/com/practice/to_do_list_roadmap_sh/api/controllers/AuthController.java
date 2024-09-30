@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.practice.to_do_list_roadmap_sh.api.dtos.UserCreateDTO;
 import com.practice.to_do_list_roadmap_sh.api.dtos.UserLoginDTO;
-import com.practice.to_do_list_roadmap_sh.api.services.UserInfoService;
+import com.practice.to_do_list_roadmap_sh.api.services.AuthInfoService;
 
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/auth")
 public class AuthController {
 
-
-    private final UserInfoService userInfoService;
+    private final AuthInfoService userInfoService;
 
     private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserInfoService userInfoService, PasswordEncoder passwordEncoder) {
+    public AuthController(AuthInfoService userInfoService, PasswordEncoder passwordEncoder) {
         this.userInfoService = userInfoService;
         this.passwordEncoder = passwordEncoder;
     }

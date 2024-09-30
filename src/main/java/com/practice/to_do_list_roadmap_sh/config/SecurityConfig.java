@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.practice.to_do_list_roadmap_sh.api.services.UserInfoService;
+import com.practice.to_do_list_roadmap_sh.api.services.AuthInfoService;
 
 @Configuration
 @EnableWebSecurity
@@ -27,9 +27,9 @@ public class SecurityConfig{
 
     private final JwtFilter jwtFilter;
 
-    private final UserInfoService userInfoService;
+    private final AuthInfoService userInfoService;
 
-    public SecurityConfig(@Lazy JwtFilter jwtFilter, @Lazy UserInfoService userInfoService) {
+    public SecurityConfig(@Lazy JwtFilter jwtFilter, @Lazy AuthInfoService userInfoService) {
         this.jwtFilter = jwtFilter;
         this.userInfoService = userInfoService;
     }
