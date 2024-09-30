@@ -31,7 +31,6 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserCreateDTO user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        System.out.println("User created: " + user);
         String responseMessage = userInfoService.createUser(user);
         return ResponseEntity.ok(responseMessage);
     }

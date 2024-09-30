@@ -56,7 +56,6 @@ public class UserInfoService implements UserDetailsService {
         Optional<LocalUser> existingEmail = userRepository.findByEmail(user.getEmail());
 
         Optional<LocalUser> existingUser = userRepository.findByUsername(user.getUsername());
-        System.out.println("User created: " + user);
         if (existingEmail.isPresent())
             return "This email already exists, please use other";
         if (existingUser.isPresent())
@@ -81,7 +80,6 @@ public class UserInfoService implements UserDetailsService {
     public Map<String, String> loginByUserName(UserLoginDTO credentials) throws LoggedUserNotFoundException {
         String username = credentials.getUserName();
         String password = credentials.getPassword();
-        System.out.println("User: " + credentials.toString());
 
         Optional<LocalUser> user = userRepository.findByUsername(username);
 
