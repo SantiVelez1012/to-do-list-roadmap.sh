@@ -22,14 +22,14 @@ public class TaskService {
         this.localUserService = localUserService;
     }
 
-    public TaskDTO createNewTask(TaskDTO task){
+    public TaskDTO createNewTask(TaskDTO task, String token){
 
         Task newTask = new Task();
         newTask.setTitle(task.getTitle());
         newTask.setDescription(task.getDescription());
-
-        Optional<LocalUser> taskOwner = localUserService.getUserByUsername(task.getOwner());
-        System.out.println(taskOwner.get().toString());
+        
+        String username = localUserService.getUsernameFromToken(token);
+        Optional<LocalUser> taskOwner = localUserService.getUserByUsername(username);
         if(!taskOwner.isPresent()) throw new GenericException(Causes.USER_NOT_FOUND);
         newTask.setUser(taskOwner.get());
 

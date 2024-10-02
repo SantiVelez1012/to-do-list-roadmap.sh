@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
             case TASK_NOT_FOUND -> status = HttpStatus.NOT_FOUND;
             case USER_NOT_FOUND -> status = HttpStatus.NOT_FOUND;
             case USER_ALREADY_EXISTS -> status = HttpStatus.BAD_REQUEST;
+            default -> throw new IllegalArgumentException("Unexpected value: " + cause);
         }
 
         ErrorResponse errorResponse = new ErrorResponse(

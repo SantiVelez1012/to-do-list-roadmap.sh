@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.practice.to_do_list_roadmap_sh.api.dtos.TaskDTO;
 import com.practice.to_do_list_roadmap_sh.api.exceptions.GenericException;
-import com.practice.to_do_list_roadmap_sh.api.services.AuthInfoService;
 import com.practice.to_do_list_roadmap_sh.api.services.LocalUserService;
 import com.practice.to_do_list_roadmap_sh.api.services.TaskService;
 
@@ -33,9 +32,7 @@ public class TasksController {
     @PostMapping()
     public ResponseEntity<TaskDTO> createNewTask(@RequestBody TaskDTO newTask, @RequestHeader Map<String, String> headers) throws GenericException {
         String token = headers.get("authorization");
-        String username = localUserService.getUsernameFromToken(token);
-        newTask.setOwner(username);
-        TaskDTO taskCreated = taskService.createNewTask(newTask);
+        TaskDTO taskCreated = taskService.createNewTask(newTask, token);
         return ResponseEntity.status(HttpStatus.CREATED).body(taskCreated);
     }
     

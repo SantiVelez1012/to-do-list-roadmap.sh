@@ -21,6 +21,7 @@ public class LocalUserService {
     }
 
     public String getUsernameFromToken(String token){
+        token = token.split(" ")[1];
         return jwtService.extractUsername(token);
     }
 
