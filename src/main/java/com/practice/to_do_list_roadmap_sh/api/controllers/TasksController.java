@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.practice.to_do_list_roadmap_sh.api.dtos.TaskDTO;
 import com.practice.to_do_list_roadmap_sh.api.exceptions.GenericException;
-import com.practice.to_do_list_roadmap_sh.api.services.LocalUserService;
 import com.practice.to_do_list_roadmap_sh.api.services.TaskService;
 
 import org.springframework.http.HttpStatus;
@@ -22,11 +21,8 @@ public class TasksController {
 
     private final TaskService taskService;
 
-    private final LocalUserService localUserService;
-
-    TasksController( TaskService taskService, LocalUserService localUserService ){
+    TasksController( TaskService taskService ){
         this.taskService = taskService;
-        this.localUserService = localUserService;
     }
 
     @PostMapping()
