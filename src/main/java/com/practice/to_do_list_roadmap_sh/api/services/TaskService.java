@@ -1,5 +1,7 @@
 package com.practice.to_do_list_roadmap_sh.api.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -40,6 +42,14 @@ public class TaskService {
         taskDTO.setDescription(taskCreated.getDescription());
         taskDTO.setOwner(taskCreated.getUser().getUsername());
         return taskDTO;
+
+    }
+
+    public Page<Task> getAllTasks(int page, int size, String token){
+
+        String username = localUserService.getUsernameFromToken(token);
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return taskRepository.findByUserUsername(username, pageRequest);
 
     }
 }
