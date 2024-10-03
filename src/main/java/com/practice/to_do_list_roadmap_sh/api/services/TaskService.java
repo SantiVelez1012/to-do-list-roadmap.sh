@@ -52,4 +52,29 @@ public class TaskService {
         return taskRepository.findByUserUsername(username, pageRequest);
 
     }
+
+    public TaskDTO updateTask(Long id, TaskDTO task, String token){
+
+        String username = localUserService.getUsernameFromToken(token);
+        Optional<LocalUser> taskOwner = localUserService.getUserByUsername(username);
+        if(!taskOwner.isPresent()) throw new GenericException(Causes.USER_NOT_FOUND);
+
+        Optional<Task> taskToUpdate = taskRepository.findById(id);
+        if(!taskToUpdate.isPresent()) throw new GenericException(Causes.TASK_NOT_FOUND);
+
+        if(!taskToUpdate.get().getUser().getUsername().equals(username)) throw new GenericException(Causes.USER_DOES_NOT_OWN_THIS_TASK);
+
+        Task taskUpdated = taskToUpdate.get();
+        taskUpdated.setTitle(task.getTitle());
+        taskUpdated.setDescription(task.getDescription());
+
+        Task taskSaved = taskRepository.save(taskUpdated);
+
+        TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setTitle(taskSaved.getTitle());
+        taskDTO.setDescription(taskSaved.getDescription());
+        taskDTO.setOwner(taskSaved.getUser().getUsername());
+        return taskDTO;
+
+    }
 }

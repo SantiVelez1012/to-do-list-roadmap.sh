@@ -13,7 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import java.util.Map;
@@ -43,4 +45,10 @@ public class TasksController {
         return ResponseEntity.status(HttpStatus.OK).body(taskList);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskDTO> updateTask(@PathVariable Long id, @RequestBody TaskDTO task, @RequestHeader Map<String, String> headers) throws GenericException {
+        String token = headers.get("authorization");
+        TaskDTO updatedTask = taskService.updateTask(id, task, token);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedTask);
+    }
 }

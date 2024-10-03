@@ -12,21 +12,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(GenericException.class)
     public ResponseEntity<ErrorResponse> handleBlogPostExceptions(GenericException exception, WebRequest request) {
-        HttpStatus status = HttpStatus.OK; // set the default status
+        HttpStatus status = HttpStatus.OK;
         Causes cause = exception.cause;
 
         switch (cause) {
-            case TASK_NOT_FOUND -> status = HttpStatus.NOT_FOUND;
-            case USER_NOT_FOUND -> status = HttpStatus.NOT_FOUND;
+            case TASK_NOT_FOUND -> status = HttpStatus.BAD_REQUEST;
+            case USER_NOT_FOUND -> status = HttpStatus.BAD_REQUEST;
             case USER_ALREADY_EXISTS -> status = HttpStatus.BAD_REQUEST;
-            default -> throw new IllegalArgumentException("Unexpected value: " + cause);
+            case USER_DOES_NOT_OWN_THIS_TASK -> status = HttpStatus.BAD_REQUEST;
+            default -> status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
                 status.value(),
                 exception.getMessage(),
-                exception.getCause().getMessage());
+                exception.cause.label);
         return new ResponseEntity<>(errorResponse, status);
     }
 
