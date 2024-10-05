@@ -12,6 +12,7 @@ import com.practice.to_do_list_roadmap_sh.persistence.entities.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,5 +51,12 @@ public class TasksController {
         String token = headers.get("authorization");
         TaskDTO updatedTask = taskService.updateTask(id, task, token);
         return ResponseEntity.status(HttpStatus.OK).body(updatedTask);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<TaskDTO> deleteTask (@PathVariable Long id, @RequestHeader Map<String, String> headers) throws GenericException {
+        String token = headers.get("authorization");
+        TaskDTO deletedTask = taskService.deleteTask(id, token);
+        return ResponseEntity.status(HttpStatus.OK).body(deletedTask);
     }
 }
