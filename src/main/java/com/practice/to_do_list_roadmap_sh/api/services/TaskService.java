@@ -30,10 +30,9 @@ public class TaskService {
         newTask.setTitle(task.getTitle());
         newTask.setDescription(task.getDescription());
         
-        String username = localUserService.getUsernameFromToken(token);
-        Optional<LocalUser> taskOwner = localUserService.getUserByUsername(username);
-        if(!taskOwner.isPresent()) throw new GenericException(Causes.USER_NOT_FOUND);
-        newTask.setUser(taskOwner.get());
+        String username = getUsernameFromToken(token);
+        LocalUser taskOwner = validateIfUserExists(username);
+        newTask.setUser(taskOwner);
 
         Task taskCreated = taskRepository.save(newTask);
 
@@ -47,7 +46,7 @@ public class TaskService {
 
     public Page<Task> getAllTasks(int page, int size, String token){
 
-        String username = localUserService.getUsernameFromToken(token);
+        String username = getUsernameFromToken(token);
         PageRequest pageRequest = PageRequest.of(page, size);
         return taskRepository.findByUserUsername(username, pageRequest);
 
@@ -55,9 +54,8 @@ public class TaskService {
 
     public TaskDTO updateTask(Long id, TaskDTO task, String token){
 
-        String username = localUserService.getUsernameFromToken(token);
-        Optional<LocalUser> taskOwner = localUserService.getUserByUsername(username);
-        if(!taskOwner.isPresent()) throw new GenericException(Causes.USER_NOT_FOUND);
+        String username = getUsernameFromToken(token);
+        validateIfUserExists(username);
 
         Optional<Task> taskToUpdate = taskRepository.findById(id);
         if(!taskToUpdate.isPresent()) throw new GenericException(Causes.TASK_NOT_FOUND);
@@ -76,5 +74,39 @@ public class TaskService {
         taskDTO.setOwner(taskSaved.getUser().getUsername());
         return taskDTO;
 
+    }
+
+    public TaskDTO deleteTask(Long id, String token){
+
+        String username = getUsernameFromToken(token);
+        validateIfUserExists(username);
+        Optional<Task> taskToDelete = taskRepository.findById(id);
+        if(!taskToDelete.isPresent()) throw new GenericException(Causes.TASK_NOT_FOUND);
+
+        if(!taskToDelete.get().getUser().getUsername().equals(username)) throw new GenericException(Causes.USER_DOES_NOT_OWN_THIS_TASK);
+
+        TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setTitle(taskToDelete.get().getTitle());
+        taskDTO.setDescription(taskToDelete.get().getDescription());
+        taskDTO.setOwner(taskToDelete.get().getUser().getUsername());
+
+        taskRepository.delete(taskToDelete.get());
+
+        return taskDTO;
+
+    }
+
+    private LocalUser validateIfUserExists(String username){
+
+        Optional<LocalUser> taskOwner = localUserService.getUserByUsername(username);
+        if(!taskOwner.isPresent()) throw new GenericException(Causes.USER_NOT_FOUND);
+
+        return taskOwner.get();
+
+    }
+
+
+    private String getUsernameFromToken(String token){
+        return localUserService.getUsernameFromToken(token);
     }
 }
